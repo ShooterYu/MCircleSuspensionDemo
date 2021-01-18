@@ -15,6 +15,8 @@
 		1A3EF3A325B3422E00455AEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A3EF3A125B3422E00455AEB /* LaunchScreen.storyboard */; };
 		1A3EF3AE25B3422E00455AEB /* MCircleSuspensionDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3EF3AD25B3422E00455AEB /* MCircleSuspensionDemoTests.swift */; };
 		1A3EF3B925B3422E00455AEB /* MCircleSuspensionDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3EF3B825B3422E00455AEB /* MCircleSuspensionDemoUITests.swift */; };
+		1A3EF3CE25B3428300455AEB /* CircleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3EF3CD25B3428300455AEB /* CircleModel.swift */; };
+		1A3EF3D625B3457900455AEB /* MCircleSuspensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3EF3D525B3457900455AEB /* MCircleSuspensionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		1A3EF3B425B3422E00455AEB /* MCircleSuspensionDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MCircleSuspensionDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A3EF3B825B3422E00455AEB /* MCircleSuspensionDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCircleSuspensionDemoUITests.swift; sourceTree = "<group>"; };
 		1A3EF3BA25B3422E00455AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A3EF3CD25B3428300455AEB /* CircleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleModel.swift; sourceTree = "<group>"; };
+		1A3EF3D525B3457900455AEB /* MCircleSuspensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCircleSuspensionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,7 @@
 		1A3EF38A25B3422B00455AEB = {
 			isa = PBXGroup;
 			children = (
+				1A3EF3C925B3423C00455AEB /* MCircleSuspension */,
 				1A3EF39525B3422B00455AEB /* MCircleSuspensionDemo */,
 				1A3EF3AC25B3422E00455AEB /* MCircleSuspensionDemoTests */,
 				1A3EF3B725B3422E00455AEB /* MCircleSuspensionDemoUITests */,
@@ -126,6 +131,15 @@
 				1A3EF3BA25B3422E00455AEB /* Info.plist */,
 			);
 			path = MCircleSuspensionDemoUITests;
+			sourceTree = "<group>";
+		};
+		1A3EF3C925B3423C00455AEB /* MCircleSuspension */ = {
+			isa = PBXGroup;
+			children = (
+				1A3EF3CD25B3428300455AEB /* CircleModel.swift */,
+				1A3EF3D525B3457900455AEB /* MCircleSuspensionView.swift */,
+			);
+			path = MCircleSuspension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,6 +275,8 @@
 				1A3EF39B25B3422B00455AEB /* ViewController.swift in Sources */,
 				1A3EF39725B3422B00455AEB /* AppDelegate.swift in Sources */,
 				1A3EF39925B3422B00455AEB /* SceneDelegate.swift in Sources */,
+				1A3EF3CE25B3428300455AEB /* CircleModel.swift in Sources */,
+				1A3EF3D625B3457900455AEB /* MCircleSuspensionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
