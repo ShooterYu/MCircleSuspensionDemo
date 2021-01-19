@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+let defaultRadius: CGFloat = 30.0
+let defaultFontSize = 15
+let defaultInset = 10
 struct CircleModel {
     var color: UIColor = .red
     var text: String?

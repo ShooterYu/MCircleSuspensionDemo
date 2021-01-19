@@ -16,6 +16,19 @@ class MCircleSuspensionView: UIView {
     weak var delegate: MCircleSuspensionViewDelegate?
     var circleModels: [CircleModel]? {
         didSet {
+            self.circleModels = self.circleModels?.map({ model -> CircleModel in
+                if let text = model.text, text.count > 0, model.radius == defaultRadius {
+                    let width = text.count / 2 * defaultFontSize
+                    let defaultWidth = Int(defaultRadius) * 2 - defaultInset * 2
+                    var tmpModel = model
+                    if width > defaultWidth {
+                        let inset = (width * defaultInset) / (Int(defaultRadius) * 2)
+                        tmpModel.radius = CGFloat(width / 2 + inset)
+                        return tmpModel
+                    }
+                }
+                return model
+            })
             self.drawCircles()
         }
     }
@@ -27,15 +40,28 @@ class MCircleSuspensionView: UIView {
         let width = self.bounds.width
         let height = self.bounds.height
         return [CGPoint(x: 0, y: 0),
+                CGPoint(x: width, y: height),
                 CGPoint(x: 0, y: height / 2),
-                CGPoint(x: 0, y: height),
+                CGPoint(x: width, y: height/2),
                 CGPoint(x: width / 2, y: 0),
                 CGPoint(x: width / 2, y: height),
-                CGPoint(x: width, y: 0),
-                CGPoint(x: width, y: height/2),
-                CGPoint(x: width, y: height)]
+                CGPoint(x: 0, y: height),
+                CGPoint(x: width, y: 0)]
     }()
-    
+    private var _nextJoinPointIndex: Int?
+    private var nextJoinPointIndex: Int? {
+        get {
+            return _nextJoinPointIndex
+        }
+        set {
+            if newValue == self.randomPointArray.count - 1 {
+                _nextJoinPointIndex = 0
+            } else {
+                _nextJoinPointIndex = newValue
+            }
+        }
+    }
+    private var startIndex = -1
     
     private func drawCircles() {
         guard let tCircleModel = circleModels else {
@@ -43,6 +69,8 @@ class MCircleSuspensionView: UIView {
         }
         self.clearAll()
         self.drawsModel.removeAll()
+        self.nextJoinPointIndex = 0
+        self.startIndex = -1
         for model in tCircleModel {
             self.realyDrawCircel(model: model)
         }
@@ -54,12 +82,17 @@ class MCircleSuspensionView: UIView {
     
     private func generateCircleBtn(model: CircleModel) -> UIButton {
         let btn = UIButton()
-        btn.bounds = CGRect(x: 0, y: 0, width: model.radius*2, height: model.radius*2)
+        let width = model.radius*2
+        btn.bounds = CGRect(x: 0, y: 0, width: width, height: width)
         btn.center = model.centerPoint
         btn.setTitle(model.text, for: .normal)
         btn.titleLabel?.textAlignment = .center
         btn.setTitleColor(.white, for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        btn.titleLabel?.adjustsFontSizeToFitWidth = true
+        btn.titleLabel?.numberOfLines = 2
+        let distance = (width * CGFloat(defaultInset)) / (defaultRadius * 2)
+        btn.contentEdgeInsets = UIEdgeInsets(top: 0, left: distance, bottom: 0, right: distance)
         btn.backgroundColor = model.color
         btn.layer.cornerRadius = CGFloat(model.radius)
         btn.addTarget(self, action: #selector(btnTouched(sender:)), for: .touchDown)
@@ -135,11 +168,12 @@ class MCircleSuspensionView: UIView {
             self.drawsModel.append(tmpModel)
             return
         } else {
-            let randomPoint = self.generateRandomPoint()
-            print("randomPoint is \(randomPoint)")
+            guard let nextPointIndex = self.nextJoinPointIndex, self.startIndex != nextPointIndex else {
+                return
+            }
+            let randomPoint = self.randomPointArray[nextPointIndex]
             let twoPoint = self.findTwoShortDistancePoint(point: randomPoint)
-            print(twoPoint)
-            let equleSideLength = model.radius + tmpModel.radius
+            let equleSideLength = model.radius + tmpModel.radius + 4
             let otherSideLength = self.sqrtNum(first: twoPoint.0, second: twoPoint.1)
             if let resultCenter = self.caculateThirdPoint(point:randomPoint, pointA: twoPoint.0, pointB: twoPoint.1, a: equleSideLength, b: equleSideLength, c: otherSideLength) {
                 tmpModel.centerPoint = resultCenter
@@ -147,10 +181,14 @@ class MCircleSuspensionView: UIView {
                     let btn = self.generateCircleBtn(model: tmpModel)
                     self.addSubview(btn)
                     self.drawsModel.append(tmpModel)
+                    self.startIndex = nextPointIndex
+                    self.nextJoinPointIndex = nextPointIndex + 1
                 } else {
+                    self.nextJoinPointIndex = nextPointIndex + 1
                     self.realyDrawCircel(model: tmpModel)
                 }
             } else {
+                self.nextJoinPointIndex = nextPointIndex + 1
                 self.realyDrawCircel(model: tmpModel)
             }
         }
@@ -162,7 +200,7 @@ class MCircleSuspensionView: UIView {
         }
         let cosA = (b * b + c * c - a * a) / (2 * b * c)
         var angleA = acosf(Float(cosA))
-        if point.x > pointA.x && point.y > pointA.y && point.y > pointB.y {
+        if point.x == self.bounds.width || (point.x == self.bounds.width / 2 && point.y == self.bounds.height) {
             angleA = -angleA
         }
         let vAC = atanf(Float((pointB.y - pointA.y) / (pointB.x - pointA.x))) - angleA

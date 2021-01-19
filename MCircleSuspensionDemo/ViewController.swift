@@ -12,7 +12,7 @@ class ViewController: UIViewController, MCircleSuspensionViewDelegate {
     
     lazy var modelArray: [CircleModel] = {
         var modelArray = [CircleModel]()
-        for i in 0...4 {
+        for i in 0...10 {
             var model = CircleModel()
             model.text = "\(i)"
             modelArray.append(model)
